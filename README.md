@@ -45,7 +45,7 @@ The mode is declared per block in each repo's `AGENTS.md` (`mode=existing|new`);
 Install once, works in every repo:
 
 ```
-/plugin marketplace add onyourmarks-agency/oym-development-conventions
+/plugin marketplace add https://github.com/onyourmarks-agency/oym-development-conventions
 /plugin install oym-conventions@oym
 ```
 
