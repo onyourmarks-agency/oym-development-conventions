@@ -1,0 +1,9 @@
+{
+  "name": "oym-conventions",
+  "version": "1.0.0",
+  "description": "On Your Marks development conventions and skills for PHP (Craft, Symfony, api-simple), NestJS, and Svelte/SvelteKit.",
+  "author": {
+    "name": "On Your Marks",
+    "email": "hosting@onyourmarks.agency"
+  }
+}

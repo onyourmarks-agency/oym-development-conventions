@@ -1,0 +1,13 @@
+{
+  "name": "oym",
+  "owner": {
+    "name": "On Your Marks"
+  },
+  "plugins": [
+    {
+      "name": "oym-conventions",
+      "source": "./",
+      "description": "OYM development conventions and skills for PHP (Craft, Symfony, api-simple), NestJS, and Svelte/SvelteKit."
+    }
+  ]
+}

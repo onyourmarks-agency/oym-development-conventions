@@ -1,0 +1,12 @@
+# OYM PHPStan config for NEW projects: level max, green from day one.
+# Adjust `paths` to the repo (Craft sites: modules + api-simple; plugins/Symfony: src).
+parameters:
+    level: max
+    paths:
+        - modules
+        - api-simple
+    excludePaths:
+        - vendor
+        - storage
+        - migrations
+    treatPhpDocTypesAsCertain: false

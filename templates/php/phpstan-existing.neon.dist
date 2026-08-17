@@ -1,0 +1,17 @@
+# OYM PHPStan config for EXISTING projects: level max plus a generated baseline.
+# Generate once: vendor/bin/phpstan analyse --generate-baseline
+# The baseline is a ratchet: never add to it, shrink it when touching baselined files.
+# Never lower the level instead of baselining.
+includes:
+    - phpstan-baseline.neon
+
+parameters:
+    level: max
+    paths:
+        - modules
+        - api-simple
+    excludePaths:
+        - vendor
+        - storage
+        - migrations
+    treatPhpDocTypesAsCertain: false

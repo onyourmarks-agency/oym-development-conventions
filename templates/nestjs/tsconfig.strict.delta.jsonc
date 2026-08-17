@@ -1,0 +1,16 @@
+// OYM NestJS strictness delta.
+// New services: merge these into tsconfig.json compilerOptions from day one.
+// Existing services: flipping these breaks the build repo-wide; treat as a
+// dedicated migration task, never a drive-by. Until then: no new `any`, and
+// remove `any` from files you touch.
+{
+  "compilerOptions": {
+    "strict": true,
+    "noImplicitAny": true,
+    "strictBindCallApply": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true
+  }
+}
