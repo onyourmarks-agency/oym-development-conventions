@@ -24,8 +24,8 @@ Webpack is never chosen for new projects. Conventions live at `${CLAUDE_PLUGIN_R
 ## Step 2: checklist (all stacks)
 
 1. Scaffold from the boilerplate where one exists; otherwise build the structure described in the framework/tool file. Never hand-roll a different structure.
-2. `AGENTS.md` from `templates/AGENTS.template.md` with the stack blocks from the table above, header `mode=new`. Vendor the cards: `node scripts/sync-conventions.mjs --stacks <stacks> --target .` (from a checkout of the conventions repo, or via its npx bin).
-3. `CLAUDE.md` from `templates/CLAUDE.template.md` (one line: `@AGENTS.md`).
+2. Wire conventions with the CLI: `oym-conventions init --mode new --stacks <stacks from the table> --yes` (writes AGENTS.md with vendored cards, CLAUDE.md, and offers the quality-gate templates in one go). If the CLI is not installed: `curl -fsSL https://raw.githubusercontent.com/onyourmarks-agency/oym-development-conventions/main/install.sh | bash`.
+3. Fill in the AGENTS.md project sections (what the project is, project-specific rules).
 4. Quality gates before feature work:
    - PHP: `templates/php/phpcs.xml` (adjust scan targets) + `templates/php/phpstan.neon.dist` (level max) + `templates/php/phpunit.xml.dist`; require-dev `squizlabs/php_codesniffer` + `slevomat/coding-standard` + `dealerdirect/phpcodesniffer-composer-installer` + `phpstan/phpstan` (+ `phpstan/phpstan-symfony`/`-doctrine` for Symfony).
    - NestJS: full `strict: true` (`templates/nestjs/tsconfig.strict.delta.jsonc`), `no-explicit-any: error` (`templates/nestjs/eslint.any-rules.snippet.mjs`), Jest wired.

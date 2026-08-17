@@ -1,0 +1,44 @@
+version: 2
+project_name: oym-conventions
+dist: _output
+
+builds:
+  - main: .
+    binary: oym-conventions
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - darwin
+      - windows
+    goarch:
+      - amd64
+      - arm64
+    ldflags:
+      - -s -w
+      - -X github.com/onyourmarks-agency/oym-development-conventions/internal/buildinfo.Version={{ .Tag }}
+      - -X github.com/onyourmarks-agency/oym-development-conventions/internal/buildinfo.GitCommit={{ .ShortCommit }}
+      - -X github.com/onyourmarks-agency/oym-development-conventions/internal/buildinfo.BuildTime={{ .Date }}
+
+archives:
+  - name_template: "{{ .ProjectName }}-{{ .Tag }}-{{ .Os }}-{{ .Arch }}"
+    files:
+      - README.md
+    format_overrides:
+      - goos: windows
+        formats: [zip]
+
+checksum:
+  name_template: "CHECKSUM"
+
+changelog:
+  use: github
+  groups:
+    - title: Features
+      regexp: '^.*?feat(\(.+\))??!?:.+$'
+      order: 0
+    - title: Fixes
+      regexp: '^.*?fix(\(.+\))??!?:.+$'
+      order: 1
+    - title: Other
+      order: 999

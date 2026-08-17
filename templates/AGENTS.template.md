@@ -1,12 +1,11 @@
 # AGENTS.md
 
 <!--
-  Starter for OYM product repos.
+  Starter for OYM product repos (written by `oym-conventions init`).
   1. Fill in the project summary and project-specific rules below.
   2. Set mode=existing or mode=new on each convention block.
-  3. Keep the marker blocks; their content is machine-managed by
-     scripts/sync-conventions.mjs from oym-development-conventions.
-     Init/refresh: node scripts/sync-conventions.mjs --stacks <stack,...> --target .
+  3. Keep the marker blocks; their content is machine-managed.
+     Refresh: `oym-conventions sync`. Verify: `oym-conventions check`.
 -->
 
 ## What this project is
@@ -28,5 +27,5 @@ Rules below are vendored from `oym-development-conventions`. Project-specific ru
 <!-- Add one empty block pair per applicable layer (same syntax as the shared block
      above): language (php or javascript) + framework (framework-craft, framework-craft-plugin,
      framework-api-simple, framework-symfony, framework-svelte, framework-nestjs) + tool
-     (tool-vite, tool-webpack, tool-sveltekit) where applicable. Or let the sync script
-     append them via its stacks flag: sync-conventions.mjs with stacks=php,framework-craft -->
+     (tool-vite, tool-webpack, tool-sveltekit) where applicable. Or let the CLI append
+     them: `oym-conventions sync` with the stacks flag (stacks=php,framework-craft) -->

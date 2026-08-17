@@ -1,0 +1,49 @@
+# Conventions freshness for product repos. Copy into the project's .gitlab-ci.yml
+# (or include this file) and create a monthly pipeline schedule with
+# CONVENTIONS_CHECK=true. Candidate for the oym-gitlab-deploy-templates catalog.
+#
+# Define a GITHUB_TOKEN CI/CD variable (fine-grained read-only PAT for the
+# conventions repo): unauthenticated GitHub API calls are limited to 60/hour per
+# IP and are routinely rate-limited from shared-runner IPs; the token also makes
+# the install work if the conventions repo is private. install.sh picks it up
+# automatically.
+#
+# Variant 1 (default): scheduled check. Warns when the vendored convention cards
+# in AGENTS.md are stale; a developer then runs `oym-conventions sync` locally.
+conventions-check:
+  stage: test
+  image: alpine:latest
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "schedule" && $CONVENTIONS_CHECK == "true"'
+  allow_failure: true
+  before_script:
+    - apk add --no-cache bash curl tar
+    - curl -fsSL https://raw.githubusercontent.com/onyourmarks-agency/oym-development-conventions/main/install.sh | INSTALL_DIR=/usr/local/bin bash
+  script:
+    - oym-conventions check
+
+# Variant 2 (opt-in): scheduled auto-sync that opens a merge request when the
+# cards drifted. Requires a project access token with api + write_repository
+# scopes stored as PROJECT_TOKEN, and CONVENTIONS_AUTOSYNC=true on the schedule.
+conventions-autosync:
+  stage: test
+  image: alpine:latest
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "schedule" && $CONVENTIONS_AUTOSYNC == "true"'
+  allow_failure: true
+  before_script:
+    - apk add --no-cache bash curl tar git
+    - curl -fsSL https://raw.githubusercontent.com/onyourmarks-agency/oym-development-conventions/main/install.sh | INSTALL_DIR=/usr/local/bin bash
+  script:
+    - oym-conventions sync
+    - |
+      if git diff --quiet; then
+        echo "conventions up to date"
+        exit 0
+      fi
+      BRANCH="chore/conventions-sync-$(date +%Y%m)"
+      git config user.name "conventions-bot"
+      git config user.email "hosting@onyourmarks.agency"
+      git checkout -b "$BRANCH"
+      git commit -am "chore(conventions): sync convention cards"
+      git push "https://oauth2:${PROJECT_TOKEN}@${CI_SERVER_HOST}/${CI_PROJECT_PATH}.git" "$BRANCH" -o merge_request.create -o merge_request.title="chore(conventions): monthly conventions sync" -o merge_request.remove_source_branch

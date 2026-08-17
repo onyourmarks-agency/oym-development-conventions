@@ -1,0 +1,29 @@
+version: "2"
+
+run:
+  tests: false
+
+linters:
+  default: none
+  enable:
+    - errcheck
+    - gocyclo
+    - gosec
+    - govet
+    - ineffassign
+    - misspell
+    - revive
+    - staticcheck
+    - unparam
+    - unused
+
+formatters:
+  enable:
+    - gofmt
+    - goimports
+  settings:
+    gofmt:
+      simplify: true
+    goimports:
+      local-prefixes:
+        - github.com/onyourmarks-agency/oym-development-conventions

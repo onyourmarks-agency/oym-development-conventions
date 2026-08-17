@@ -6,14 +6,16 @@ on:
   pull_request:
 
 jobs:
-  validate:
+  test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-go@v5
         with:
-          node-version: 24
-      - name: Validate convention cards
-        run: node scripts/validate-cards.mjs
-      - name: Sync script self-test
-        run: node scripts/self-test.mjs
+          go-version: "1.23"
+      - name: Vet
+        run: go vet ./...
+      - name: Test (includes convention card validation)
+        run: go test ./...
+      - name: Build
+        run: go build .

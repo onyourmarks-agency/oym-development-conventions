@@ -26,7 +26,7 @@ NestJS deliberately shares the `javascript` layer with the front-ends: typing ru
 | `VERSIONS.md` | The only place version numbers live. Rules never hardcode versions; product repos pin their own in their manifests. |
 | `skills/` | Claude Code skills (thin routers into `conventions/`). |
 | `templates/` | Drop-in configs for product repos: PHPStan, PHPUnit, Vitest, NestJS strictness deltas, `AGENTS.md`/`CLAUDE.md` starters. |
-| `scripts/sync-conventions.mjs` | Vendors convention cards into a product repo's `AGENTS.md`. |
+| `cmd/`, `internal/`, `main.go` | The `oym-conventions` Go CLI: wires projects and keeps the vendored cards current. Rules and templates are embedded in the binary at release time. |
 | `.claude-plugin/` | Claude Code plugin and marketplace manifests. |
 
 ## The mode model
@@ -53,31 +53,43 @@ The skills (`oym-php`, `oym-nestjs`, `oym-frontend`, `oym-new-project`) trigger 
 
 ### Devin
 
-Devin reads the product repo's `AGENTS.md`, which carries the vendored cards. No per-repo setup beyond running the sync script once. Optionally add an org-level Knowledge entry per layer pointing at this repo.
+Devin reads the product repo's `AGENTS.md`, which carries the vendored cards. No per-repo setup beyond running `oym-conventions init` once. Optionally add an org-level Knowledge entry per layer pointing at this repo.
 
 ### Codex
 
 `AGENTS.md` is Codex's native mechanism, including nested files. The vendored cards work unmodified.
 
-## Wiring a product repo
+## The `oym-conventions` CLI
+
+Install once (also used in CI):
 
 ```bash
-# once, in the product repo
-cp <this-repo>/templates/AGENTS.template.md AGENTS.md   # fill in the project sections
-cp <this-repo>/templates/CLAUDE.template.md CLAUDE.md
-node <this-repo>/scripts/sync-conventions.mjs --stacks shared,php,framework-craft --target .
-
-# refresh after conventions change
-node <this-repo>/scripts/sync-conventions.mjs --target .
-
-# CI drift gate
-node <this-repo>/scripts/sync-conventions.mjs --check --target .
+curl -fsSL https://raw.githubusercontent.com/onyourmarks-agency/oym-development-conventions/main/install.sh | bash
 ```
 
-The script only rewrites content between the `oym-conventions` markers, preserves the `mode=` attribute, and stamps the source revision and sync date. Pick the layers from the table above; a Craft site with a Vite frontend carries `shared,php,framework-craft,framework-api-simple,javascript,framework-svelte,tool-vite`.
+Alternatives: `go install github.com/onyourmarks-agency/oym-development-conventions@latest` (binary lands as `oym-development-conventions`; rename it), or download an archive from the releases page.
 
-Repos that already have a rich `AGENTS.md` keep their project rules on top and append the vendored blocks under an "Organization conventions" heading; project rules override the blocks.
+The binary embeds the conventions and templates of the release it was built from; a release tag is a versioned snapshot of the rules.
+
+```bash
+oym-conventions init     # in a product repo: detects stacks, interactive confirm,
+                         # writes/extends AGENTS.md, creates CLAUDE.md, offers
+                         # quality-gate templates. Flags: --stacks, --mode, --yes.
+oym-conventions sync     # refresh the vendored blocks (idempotent)
+oym-conventions check    # exit 1 on stale/missing blocks (CI gate)
+oym-conventions update   # self-update to the latest release
+oym-conventions version
+```
+
+`init` and `sync` only rewrite content between the `oym-conventions` markers, preserve the `mode=` attribute, and stamp the tool version and sync date. Detection covers all project types in the table above; a Craft site with an `api-simple/` directory and a Vite frontend gets `shared,php,framework-craft,framework-api-simple,javascript,framework-svelte,tool-vite`.
+
+Repos that already have a rich `AGENTS.md` keep their project rules on top; `init` appends the vendored blocks under an "Organization conventions" heading, and project rules override the blocks.
+
+## Staying current
+
+- On request: run `oym-conventions update && oym-conventions sync` in the repo.
+- Monthly: create a scheduled GitLab pipeline with the jobs in `ci/gitlab-conventions-sync.yml`; the check variant warns on drift, the opt-in autosync variant opens a merge request with the refreshed cards.
 
 ## Changing the conventions
 
-Rules change via PR to this repo. Keep the card in each file a summary that fits the 200-line budget (CI enforces this and runs the sync self-test). Version bumps to `VERSIONS.md` need no other edits. Tag releases with SemVer; product repos pick up changes on their next sync run, or pin with `--ref`.
+Rules change via PR to this repo. Keep the card in each file a summary that fits the 200-line budget (CI enforces this and runs the sync lifecycle tests). Version bumps to `VERSIONS.md` need no other edits. Tag releases with SemVer; product repos pick up changes with `oym-conventions update && oym-conventions sync`, or pin by installing a specific release's binary from the releases page.
