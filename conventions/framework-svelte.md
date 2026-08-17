@@ -61,7 +61,3 @@ Projects on CSS-first Tailwind define their design tokens in the `@theme` block 
 - Vitest unit tests for states/entities/utils only; no component-render tests.
 <!-- oym-card:end stack=framework-svelte -->
 
-## Examples in the wild
-
-- Prop formatting and Tailwind token discipline: `eredivisie-top1000-fe/AGENTS.md`
-- Runes state files: `domestique-cycling/resources/js/states/`, `oym-chant-fe/src/lib/states/`

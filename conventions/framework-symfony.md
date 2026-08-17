@@ -38,6 +38,6 @@ Applies to repositories requiring `symfony/framework-bundle`. Builds on `php.md`
 - All PHP language rules apply (strict types, phpcs OYM, final/readonly, comment policy).
 <!-- oym-card:end stack=framework-symfony -->
 
-## Examples in the wild
+## Templates
 
-- `nevobo-trainersplatform-api` (API Platform + Doctrine + JWT + GraphQL)
+- `templates/php/phpcs.xml` (change scan target to `src/`), `templates/php/phpstan.neon.dist` (add the symfony/doctrine extensions), `templates/php/phpunit.xml.dist`

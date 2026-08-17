@@ -35,7 +35,28 @@ hooks.server.ts  hooks.client.ts  app.css (or style/main.css)
 - `[always]` Server secrets and `$env/dynamic/private` only under `lib/server/` or `*.server.ts` files. Keep the boundary strict.
 - `[always]` Server-side singletons follow the `getInstance()` + lazy `??=` getter pattern (`*.server.ts` modules); client side uses `BaseModule` the same way.
 - `[always]` `load` functions in `+page(.server).ts`/`+layout.server.ts` wrap API access via the module layer with try/catch fallbacks returning explicit null data; typed as `PageLoad`/`PageServerLoad`.
+
+  ```ts
+  export const load: PageServerLoad = async () => {
+  	try {
+  		return { content: await ContentModule.getInstance().get('/api/page/home') };
+  	} catch (error) {
+  		console.error(error);
+  		return { content: null };
+  	}
+  };
+  ```
 - `[always]` REST endpoints as `+server.ts` with `RequestHandler`, `json()`, and stable coded error strings (`chat_error_410` pattern). Preserve existing endpoint contracts (compact JSON, stable field names).
+
+  ```ts
+  export const GET: RequestHandler = async ({ params }) => {
+  	const conversation = await ChatModule.getInstance().find(params.id);
+  	if (conversation === null) {
+  		return json({ error: 'chat_error_410' }, { status: 410 });
+  	}
+  	return json(conversation.toResponse());
+  };
+  ```
 - `[always]` Auth/session checks on API routes are load-bearing; never remove or bypass them in a refactor.
 - `[always]` Fetch through the project's service classes (`credentials: 'include'`, CSRF handling where present, throw coded errors on `!response.ok`).
 
@@ -63,7 +84,6 @@ hooks.server.ts  hooks.client.ts  app.css (or style/main.css)
 - New apps: this structure, Vitest for entities/states day one, CSP in `svelte.config.js`.
 <!-- oym-card:end stack=tool-sveltekit -->
 
-## Examples in the wild
+## Templates
 
-- Newest: `eredivisie-top1000-fe`; richest: `oym-chant-fe`; forms/auth/CSP: `oym-paddock-fe`
-- Legacy contrast: `nevobo-trainersplatform-fe`
+- `templates/svelte/vitest.config.sveltekit.ts`

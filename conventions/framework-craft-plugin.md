@@ -51,7 +51,6 @@ Plugins are consumed by many sites; treat every release as public.
 - Existing plugins: match the plugin's era (some use constants instead of enums); modernization is its own task.
 <!-- oym-card:end stack=framework-craft-plugin -->
 
-## Examples in the wild
+## Templates
 
-- Newest pattern: `craft-cacheable`
-- Docs repo pattern: `cacheable-docs`, `social-poster-docs`, `seofy-docs` (MkDocs)
+- `templates/php/phpcs.xml` (change scan target to `src/`), `templates/php/phpstan.neon.dist`, `templates/php/phpunit.xml.dist`

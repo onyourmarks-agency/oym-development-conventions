@@ -25,6 +25,3 @@ A `webpack/` directory at the project root (`webpack.config.js`, `config/`, `plu
 - New Svelte code follows the Svelte layer (runes, lang="ts"); match surrounding style when editing older components; runes conversions and Vite migrations are dedicated tasks, never drive-bys.
 <!-- oym-card:end stack=tool-webpack -->
 
-## Examples in the wild
-
-- `eredivisie` (webpack lineage, `assets/` source, pre-script chain)

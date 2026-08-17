@@ -27,7 +27,7 @@ Webpack is never chosen for new projects. Conventions live at `${CLAUDE_PLUGIN_R
 2. `AGENTS.md` from `templates/AGENTS.template.md` with the stack blocks from the table above, header `mode=new`. Vendor the cards: `node scripts/sync-conventions.mjs --stacks <stacks> --target .` (from a checkout of the conventions repo, or via its npx bin).
 3. `CLAUDE.md` from `templates/CLAUDE.template.md` (one line: `@AGENTS.md`).
 4. Quality gates before feature work:
-   - PHP: `templates/php/phpstan.neon.dist` (level max) + `templates/php/phpunit.xml.dist`; phpcs OYM ruleset from the boilerplate; require-dev `phpstan/phpstan` (+ `phpstan/phpstan-symfony`/`-doctrine` for Symfony).
+   - PHP: `templates/php/phpcs.xml` (adjust scan targets) + `templates/php/phpstan.neon.dist` (level max) + `templates/php/phpunit.xml.dist`; require-dev `squizlabs/php_codesniffer` + `slevomat/coding-standard` + `dealerdirect/phpcodesniffer-composer-installer` + `phpstan/phpstan` (+ `phpstan/phpstan-symfony`/`-doctrine` for Symfony).
    - NestJS: full `strict: true` (`templates/nestjs/tsconfig.strict.delta.jsonc`), `no-explicit-any: error` (`templates/nestjs/eslint.any-rules.snippet.mjs`), Jest wired.
    - Frontend: Vitest config from `templates/svelte/` (pick the tool variant), husky + lint-staged, `frontend-cs` aggregate script.
 5. GitLab CI from the `oym-gitlab-deploy-templates` catalog: the PHP deploy flow components for PHP/Craft, the docker flow components (`stage-build-image`, `stage-tag-environment`) for Node apps. Copy the include block from the nearest comparable repo; component versions in `VERSIONS.md`.

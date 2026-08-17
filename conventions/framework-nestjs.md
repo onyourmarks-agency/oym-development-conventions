@@ -31,6 +31,18 @@ src/
 ## Validation, config, errors
 
 - `[always]` Global `ValidationPipe({ whitelist: true, transform: true })` in `main.ts`. Every HTTP body/query has a class-validator DTO; no untyped `@Body()`. WebSocket payloads validated through a WS validation pipe with a DTO class.
+
+  ```ts
+  export class ChatMessageDto {
+    @IsUUID(4)
+    conversationId: string;
+
+    @IsString()
+    @IsNotEmpty()
+    @MaxLength(4000)
+    content: string;
+  }
+  ```
 - `[always]` Config exclusively via `@nestjs/config` (`isGlobal: true`) and `ConfigService.getOrThrow` for required values, resolved at boot so the service fails fast. Never `process.env` outside the config layer.
 - `[always]` Errors fall through to Sentry. Do not swallow exceptions: log with the Nest `Logger` and rethrow, or return an explicit graceful fallback.
 - `[always]` All repository and provider methods return Promises; never call them without `await`. Long-running operations accept an `AbortSignal` and respect `signal.aborted`.
@@ -69,7 +81,6 @@ Some existing services ship `noImplicitAny: false` and `no-explicit-any: off`. T
 - Read the nearest nested `AGENTS.md` first; it outranks this card.
 <!-- oym-card:end stack=framework-nestjs -->
 
-## Examples in the wild
+## Templates
 
-- `unisport-agent` (including its nested `AGENTS.md` tree), `runningcoach-agent`, `zendesk-support-agent`
-- Templates: `templates/nestjs/tsconfig.strict.delta.jsonc`, `templates/nestjs/eslint.any-rules.snippet.mjs`
+- `templates/nestjs/tsconfig.strict.delta.jsonc`, `templates/nestjs/eslint.any-rules.snippet.mjs`

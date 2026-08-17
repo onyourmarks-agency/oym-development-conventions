@@ -63,6 +63,3 @@ Applies to all JavaScript and TypeScript in OYM repositories: Svelte front-ends 
 - Unit tests only: Vitest (Svelte) / Jest (NestJS); mock at boundaries; no render/browser/e2e tests. Add specs with new logic.
 <!-- oym-card:end stack=javascript -->
 
-## Examples in the wild
-
-- Style rules originate from the AGENTS.md files of the newest frontend and agent-service repos (eredivisie-top1000-fe, oym-chant-fe, unisport-agent).

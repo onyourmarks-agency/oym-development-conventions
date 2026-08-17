@@ -33,6 +33,38 @@ modules/<name>module/
 - `[always]` Services are Yii components registered on the module (`setComponents()` or a `components` config array) and accessed via magic getters. The class-level docblock is a complete, alphabetized `@property FooService $fooService` map. This map is the one sanctioned "redundant" docblock: it is what makes `$module->fooService` resolve in the IDE and PHPStan. Keep it in sync with the registered components.
 - `[always]` Keep `__construct` minimal; registration work belongs in `init()`.
 
+```php
+/**
+ * @property ImportService $importService
+ * @property StatsService $statsService
+ */
+class Foomodule extends Module
+{
+    public static Foomodule $instance;
+
+    public function init(): void
+    {
+        parent::init();
+        self::$instance = $this;
+
+        $this->setComponents([
+            'importService' => ImportService::class,
+            'statsService' => StatsService::class,
+        ]);
+
+        Event::on(Cp::class, Cp::EVENT_REGISTER_CP_NAV_ITEMS, new RegisterCpNavItemsHandler());
+    }
+}
+
+final class RegisterCpNavItemsHandler
+{
+    public function __invoke(RegisterCpNavItemsEvent $event): void
+    {
+        $event->navItems[] = ['url' => 'foomodule', 'label' => 'Foo'];
+    }
+}
+```
+
 ## Events
 
 - `[new]` One invokable handler class per event concern under `events/handlers/`: `Event::on(Cp::class, Cp::EVENT_REGISTER_CP_NAV_ITEMS, new RegisterCpNavItemsHandler())` with `public function __invoke(RegisterCpNavItemsEvent $event): void`.
@@ -69,7 +101,6 @@ modules/<name>module/
 - Existing sites: the module you are editing defines the style; mirror it exactly.
 <!-- oym-card:end stack=framework-craft -->
 
-## Examples in the wild
+## Templates
 
-- Newest module style: `domestique-cycling/modules/cyclingdatamodule/`
-- Older module style (for contrast): `eredivisie/modules/optamodule/`
+- `templates/php/phpcs.xml` (scan targets `modules/` + `api-simple/`), `templates/php/phpstan.neon.dist`, `templates/php/phpunit.xml.dist`

@@ -76,7 +76,7 @@ node <this-repo>/scripts/sync-conventions.mjs --check --target .
 
 The script only rewrites content between the `oym-conventions` markers, preserves the `mode=` attribute, and stamps the source revision and sync date. Pick the layers from the table above; a Craft site with a Vite frontend carries `shared,php,framework-craft,framework-api-simple,javascript,framework-svelte,tool-vite`.
 
-Repos with an existing rich `AGENTS.md` (the NestJS agent services, the newest front-ends) keep their project rules on top and append the vendored blocks under an "Organization conventions" heading; project rules override the blocks.
+Repos that already have a rich `AGENTS.md` keep their project rules on top and append the vendored blocks under an "Organization conventions" heading; project rules override the blocks.
 
 ## Changing the conventions
 

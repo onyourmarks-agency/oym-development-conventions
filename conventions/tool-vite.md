@@ -51,7 +51,6 @@ isolated/                 standalone islands
 - New projects scaffold from `oym-vite-boilerplate`.
 <!-- oym-card:end stack=tool-vite -->
 
-## Examples in the wild
+## Templates
 
-- Boilerplate: `oym-vite-boilerplate`
-- Production example: `domestique-cycling` (`resources/js/`)
+- `templates/svelte/vitest.config.vite-craft.ts`

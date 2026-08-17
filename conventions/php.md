@@ -12,7 +12,7 @@ Check in order:
 
 ## Coding standard: phpcs OYM ruleset
 
-- `[always]` The law is the `phpcs.xml` "OYM" ruleset: PSR-12 (line length excluded) plus the Slevomat rules below. Run `vendor/bin/phpcs` before finishing any PHP change.
+- `[always]` The law is the `phpcs.xml` "OYM" ruleset: PSR-12 (line length excluded) plus the Slevomat rules below. Run `vendor/bin/phpcs` before finishing any PHP change. The ruleset ships in this repo as `templates/php/phpcs.xml` (composer require-dev: `squizlabs/php_codesniffer`, `slevomat/coding-standard`, `dealerdirect/phpcodesniffer-composer-installer`).
 - The ruleset enforces:
   - `declare(strict_types=1);` in every file, one blank line after the open tag.
   - Trailing commas in every multiline call, declaration, closure use, and array.
@@ -69,8 +69,6 @@ Check in order:
 - Naming: methods camelCase verb-first, constants UPPER_SNAKE, descriptive variables.
 <!-- oym-card:end stack=php -->
 
-## Examples in the wild
+## Templates
 
-- Modern style throughout: `oym-api-simple/src/`
-- Ruleset source: any current repo's `phpcs.xml` (eredivisie, domestique-cycling, craft-cacheable are identical)
-- Templates: `templates/php/phpstan.neon.dist`, `templates/php/phpstan-existing.neon.dist`, `templates/php/phpunit.xml.dist`
+- `templates/php/phpcs.xml`, `templates/php/phpstan.neon.dist`, `templates/php/phpstan-existing.neon.dist`, `templates/php/phpunit.xml.dist`

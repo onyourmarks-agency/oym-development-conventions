@@ -2,7 +2,7 @@
 
 Applies to code under a top-level `api-simple/` directory in a project, and to the `oym/api-simple` package itself. Builds on `php.md`.
 
-api-simple is the in-house micro-router for high-load endpoints that must not boot Craft/Yii: near-zero dependencies, pure PHP, optional FrankenPHP worker mode. Package docs: the `api-simple-docs` MkDocs repo (routes, caching, rate limiting, database, worker mode, responses, configuration).
+api-simple is the in-house micro-router for high-load endpoints that must not boot Craft/Yii: near-zero dependencies, pure PHP, optional FrankenPHP worker mode. The package ships MkDocs documentation covering routes, caching, rate limiting, database access, worker mode, responses, and configuration.
 
 ## Action anatomy
 
@@ -13,7 +13,31 @@ api-simple is the in-house micro-router for high-load endpoints that must not bo
 - `[always]` Declare the response shape with an array-shape docblock on `handle()` so PHPStan and the IDE know the payload.
 - `[always]` Read request input via the base-class request helpers where available; validate and cast everything from `$_GET` before use.
 - `[always]` Use the framework traits for cross-cutting concerns: cache headers (`Cache-Control`, `Surrogate-Key`), Redis rate limiting, database access. Do not hand-roll these per action.
-- `[always]` Consume the `oym/api-simple` composer package. Do not copy the framework into the repo (only the oldest project does this).
+- `[always]` Consume the `oym/api-simple` composer package. Never copy the framework into the repo.
+
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace api\simple\content;
+
+use oym\api\simple\route\ApiSimple;
+
+/**
+ * @link /api-simple/?module=content&action=statistics
+ */
+final class Statistics extends ApiSimple
+{
+    /**
+     * @return array{items: list<array{id: int, title: string}>, total: int}
+     */
+    public function handle(): array
+    {
+        // validate + cast input, delegate to pure collaborators, shape the response
+    }
+}
+```
 
 ## Style ceiling
 
@@ -37,8 +61,3 @@ The full `php.md` standard applies here with no age excuses.
 - PHPStan max with zero baseline tolerance here.
 <!-- oym-card:end stack=framework-api-simple -->
 
-## Examples in the wild
-
-- Framework: `oym-api-simple` (`src/Bootstrap.php`, `src/route/ApiSimple.php`, `src/route/traits/`)
-- Modern consumer: `domestique-cycling/api-simple/`
-- Docs: `api-simple-docs` repo
