@@ -1,13 +1,12 @@
-# Craft CMS site conventions
+# Craft CMS site conventions (framework layer)
 
-Applies to Craft CMS 5 site repositories (composer requires `craftcms/cms`, not a plugin). Builds on `php-universal.md`. Canonical starting point: `oym-craft5-boilerplate`.
+Applies to Craft CMS site repositories (composer requires `craftcms/cms`, not a plugin). Builds on `php.md`. New sites scaffold from the `oym-craft5-boilerplate` repo.
 
-Files under a top-level `api-simple/` directory follow `php-api-simple.md`, not this file.
+Files under a top-level `api-simple/` directory follow `framework-api-simple.md`, not this file. A site's embedded frontend follows `javascript.md` + `framework-svelte.md` + its tool file (`tool-vite.md` or `tool-webpack.md`).
 
 ## Project shape
 
-- `[always]` Site code lives in Yii modules under `modules/`, autoloaded as `"modules\\": "modules/"`. Craft config in `config/`, Twig in `templates/`, frontend in `resources/` (see `svelte-vite-craft.md`).
-- `[always]` PHP 8.3 to 8.5 depending on project age; the OYM plugin suite (`oym/craft-cacheable`, `oym/craft-environment`, `oym/craft-utilities`, `oym/sentry-logger`, usually `oym/craft-seofy` and `oym/api-simple`) comes from the private Repman registry.
+- `[always]` Site code lives in Yii modules under `modules/`, autoloaded as `"modules\\": "modules/"`. Craft config in `config/`, Twig in `templates/`. The OYM plugin suite (`oym/craft-cacheable`, `oym/craft-environment`, `oym/craft-utilities`, `oym/sentry-logger`, usually `oym/craft-seofy` and `oym/api-simple`) comes from the private Repman registry.
 - `[always]` Module directory layout:
 
 ```
@@ -21,7 +20,7 @@ modules/<name>module/
   events/handlers/        invokable event handlers (newer projects)
   enums/                  backed enums
   variables/              Twig variables
-  fieldtypes/             custom fields
+  fieldtypes/             custom Craft fields
   records/                ActiveRecord
   web/twig/               Twig extensions
   templates/              module template roots
@@ -37,7 +36,7 @@ modules/<name>module/
 ## Events
 
 - `[new]` One invokable handler class per event concern under `events/handlers/`: `Event::on(Cp::class, Cp::EVENT_REGISTER_CP_NAV_ITEMS, new RegisterCpNavItemsHandler())` with `public function __invoke(RegisterCpNavItemsEvent $event): void`.
-- `[existing]` Older projects (eredivisie era) register events with inline static closures in the module class. Match whichever style the module already uses. Migrating inline closures to handler classes is a task on its own, not a drive-by.
+- `[existing]` Older projects register events with inline static closures in the module class. Match whichever style the module already uses. Migrating inline closures to handler classes is a task on its own, not a drive-by.
 
 ## Services, jobs, console
 
@@ -53,7 +52,7 @@ modules/<name>module/
 - `[new]` Scaffold from `oym-craft5-boilerplate`. Wire PHPStan max and PHPUnit (`templates/php/`) before feature work. Use handler classes, backed enums, typed constants from the start.
 - `[existing]` Craft sites span a decade of idioms. Read the module you are editing before writing: its event style, its service registration, its naming (module class casing is historically inconsistent; match the file you are in). Local idiom wins over this document.
 
-<!-- oym-card:begin stack=php-craft -->
+<!-- oym-card:begin stack=framework-craft -->
 # OYM Craft CMS site rules
 
 - Site code in Yii modules under `modules/`; services/, console/controllers/, jobs/, events/handlers/, enums/, variables/ inside each module.
@@ -65,13 +64,12 @@ modules/<name>module/
 - Backed enums for statuses and types; no loose strings across service boundaries.
 - Element queries explicit and chained; never query in a loop when one query works.
 - Cache invalidation via `oym/craft-cacheable` tag flushing where present.
-- Files under a top-level `api-simple/` directory follow the api-simple rules, not these.
+- Files under a top-level `api-simple/` directory follow the api-simple rules, not these. The embedded frontend follows the JavaScript + Svelte + tool layers.
 - New sites scaffold from `oym-craft5-boilerplate` with PHPStan max and PHPUnit wired first.
 - Existing sites: the module you are editing defines the style; mirror it exactly.
-<!-- oym-card:end stack=php-craft -->
+<!-- oym-card:end stack=framework-craft -->
 
-## References
+## Examples in the wild
 
-- Boilerplate: `oym-craft5-boilerplate`
 - Newest module style: `domestique-cycling/modules/cyclingdatamodule/`
 - Older module style (for contrast): `eredivisie/modules/optamodule/`

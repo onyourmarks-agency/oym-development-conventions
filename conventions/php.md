@@ -1,14 +1,14 @@
-# PHP conventions (all flavours)
+# PHP conventions (back-end language layer)
 
-Applies to every PHP file in every OYM repository: Craft sites, Craft plugins, api-simple actions, Symfony services. Flavour files (`php-craft.md`, `php-craft-plugin.md`, `php-api-simple.md`, `php-symfony.md`) build on this.
+Applies to every PHP file in every OYM repository. Framework files (`framework-craft.md`, `framework-craft-plugin.md`, `framework-api-simple.md`, `framework-symfony.md`) build on this.
 
-## Flavour detection
+## Framework detection
 
 Check in order:
 
-1. `composer.json` has `"type": "craft-plugin"` (or `src/*.php` extends `craft\base\Plugin`): Craft plugin, read `php-craft-plugin.md`.
-2. `composer.json` requires `craftcms/cms`: Craft site, read `php-craft.md`. If a top-level `api-simple/` directory exists, files under it follow `php-api-simple.md` instead.
-3. `composer.json` requires `symfony/framework-bundle`: Symfony, read `php-symfony.md`.
+1. `composer.json` has `"type": "craft-plugin"` (or `src/*.php` extends `craft\base\Plugin`): read `framework-craft-plugin.md`.
+2. `composer.json` requires `craftcms/cms`: read `framework-craft.md`. If a top-level `api-simple/` directory exists, files under it follow `framework-api-simple.md` instead.
+3. `composer.json` requires `symfony/framework-bundle`: read `framework-symfony.md`.
 
 ## Coding standard: phpcs OYM ruleset
 
@@ -25,9 +25,9 @@ Check in order:
 
 ## Language and style
 
-- `[always]` Native types on everything: parameters, returns (including `: void` and `: never`), properties, and class constants where the PHP version allows (`public const string FOO = ...` from 8.3).
+- `[always]` Native types on everything: parameters, returns (including `: void` and `: never`), properties, and class constants where the PHP version allows typed constants.
 - `[always]` Docblock types only where native types fall short: generics (`@template`, `@param array<string, Team>`), array shapes (`@return array{id: int, name: string}`), `@property` maps for magic accessors.
-- `[new]` Default to `final` classes, `readonly` where the flavour's PHP version allows, and constructor property promotion. Open a class for extension only with a reason.
+- `[new]` Default to `final` classes, `readonly` where the PHP version allows, and constructor property promotion. Open a class for extension only with a reason.
 - `[existing]` `final`/`readonly`/promotion are rare in older code. Use them in new classes; do not retrofit existing ones.
 - `[always]` Backed enums for closed value sets. No class-constant pseudo-enums in new code.
 - `[always]` `match` over `switch` where the result is a value.
@@ -40,8 +40,6 @@ Check in order:
 
 ## PHPStan
 
-No OYM PHP project shipped with PHPStan before 2026. It is now part of the standard.
-
 - `[new]` PHPStan `level: max` from day one, green before the first deploy. Config: `templates/php/phpstan.neon.dist`.
 - `[existing]` Introduce PHPStan at `level: max` with a generated baseline (`templates/php/phpstan-existing.neon.dist`, then `vendor/bin/phpstan analyse --generate-baseline`). The baseline is a ratchet: never add to it, shrink it when touching baselined files. Never lower the level instead of baselining.
 - `[always]` Inline suppressions use `@phpstan-ignore` with an identifier and a trailing reason comment. Last resort only.
@@ -51,15 +49,15 @@ No OYM PHP project shipped with PHPStan before 2026. It is now part of the stand
 
 - `[always]` Unit tests only (see `shared.md`): no database, no Craft/Yii/Symfony container boot, no HTTP. Mock adapters and element queries at the service boundary.
 - `[new]` `tests/Unit/` mirrors the source namespace; one test class per class under test; config from `templates/php/phpunit.xml.dist`.
-- `[existing]` No PHP project has tests today. Add a unit test when you add a service, handler, or pure helper with real logic. Create the minimal `phpunit.xml.dist` from templates if none exists. Do not scaffold a retroactive suite unprompted.
+- `[existing]` Most PHP projects have no tests. Add a unit test when you add a service, handler, or pure helper with real logic. Create the minimal `phpunit.xml.dist` from templates if none exists. Do not scaffold a retroactive suite unprompted.
 - Priority order when introducing tests to a Craft repo: api-simple action collaborators first (pure, modern), then module services, then enums/helpers.
 
-<!-- oym-card:begin stack=php-universal -->
-# OYM PHP rules (all flavours)
+<!-- oym-card:begin stack=php -->
+# OYM PHP rules (back-end language layer)
 
 - `declare(strict_types=1);` in every file. Run `vendor/bin/phpcs` before finishing.
 - Trailing commas in every multiline call/declaration/closure/array. Arrow functions where possible; `static` closures when `$this` is unused. Sorted `use` statements. Explicit constant visibility.
-- Native types on everything: params, returns (incl. `void`/`never`), properties, typed constants (8.3+). Docblocks only for generics, array shapes, and `@property` maps.
+- Native types on everything: params, returns (incl. `void`/`never`), properties, typed constants where the PHP version allows. Docblocks only for generics, array shapes, and `@property` maps.
 - New classes: `final` by default, `readonly` and constructor promotion where the PHP version allows. Do not retrofit old classes.
 - Backed enums for closed value sets. `match` over `switch` for values. Named arguments for boolean params.
 - Guard clauses over nesting. `JSON_THROW_ON_ERROR` always. No `@` suppression, no new `mixed`.
@@ -69,10 +67,10 @@ No OYM PHP project shipped with PHPStan before 2026. It is now part of the stand
 - `@phpstan-ignore` needs an identifier and a reason. Last resort.
 - Unit tests only (PHPUnit, `tests/Unit/` mirroring src): no DB, no container boot, mock at service boundaries. Existing projects: test new logic you add; do not scaffold suites unprompted.
 - Naming: methods camelCase verb-first, constants UPPER_SNAKE, descriptive variables.
-<!-- oym-card:end stack=php-universal -->
+<!-- oym-card:end stack=php -->
 
-## References
+## Examples in the wild
 
-- Canonical modern PHP in the org: `oym-api-simple/src/` (final readonly, promotion, `: never`)
+- Modern style throughout: `oym-api-simple/src/`
 - Ruleset source: any current repo's `phpcs.xml` (eredivisie, domestique-cycling, craft-cacheable are identical)
 - Templates: `templates/php/phpstan.neon.dist`, `templates/php/phpstan-existing.neon.dist`, `templates/php/phpunit.xml.dist`

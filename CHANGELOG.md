@@ -9,8 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Convention documents for all stacks: shared, php-universal, php-craft, php-craft-plugin, php-api-simple, php-symfony, nestjs, svelte-universal, svelte-vite-craft, sveltekit.
-- Claude Code plugin with four skills: oym-php, oym-nestjs, oym-svelte, oym-new-project.
+- Layered convention documents: `shared`, language layers (`php`, `javascript`), framework layers (`framework-craft`, `framework-craft-plugin`, `framework-api-simple`, `framework-symfony`, `framework-svelte`, `framework-nestjs`), and tool layers (`tool-vite`, `tool-webpack`, `tool-sveltekit`). NestJS composes the shared `javascript` layer with the front-ends.
+- `VERSIONS.md` as the single location for version targets; convention rules are version-free.
+- Claude Code plugin with four skills: `oym-php`, `oym-nestjs`, `oym-frontend`, `oym-new-project`.
 - `sync-conventions.mjs` for vendoring convention cards into product repo `AGENTS.md` files, with drift checking.
-- Templates: PHPStan (new and existing-with-baseline), PHPUnit, NestJS strictness deltas, Vitest configs per frontend family, `AGENTS.md`/`CLAUDE.md` starters.
+- Templates: PHPStan (new and existing-with-baseline), PHPUnit, NestJS strictness deltas, Vitest configs per frontend tool, `AGENTS.md`/`CLAUDE.md` starters.
 - CI validation of card blocks and sync script self-test.

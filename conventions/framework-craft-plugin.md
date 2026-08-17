@@ -1,6 +1,6 @@
-# Craft plugin conventions
+# Craft plugin conventions (framework layer)
 
-Applies to repositories with composer `"type": "craft-plugin"`. Builds on `php-universal.md`. Reference: `craft-cacheable` (newest, strictest).
+Applies to repositories with composer `"type": "craft-plugin"`. Builds on `php.md`.
 
 ## Structure
 
@@ -22,7 +22,7 @@ CHANGELOG.md
 ```
 
 - `[always]` The plugin class follows the same pattern as a site module class: `public static self $instance`, `@plugins/<handle>` alias, console `controllerNamespace` switch, `@property` service map docblock, event registration in `init()`.
-- `[new]` Declare services as a typed class constant array and wire them with `setComponents()` in `init()` (craft-cacheable pattern). Guard required environment variables at boot with a thrown `RuntimeException`.
+- `[new]` Declare services as a typed class constant array and wire them with `setComponents()` in `init()`. Guard required environment variables at boot with a thrown `RuntimeException`.
 - `[always]` Settings live in `models/Settings.php` with typed public properties. Services read settings from the model, never scattered `getenv`/`$_ENV` reads.
 
 ## Migrations
@@ -35,11 +35,11 @@ Plugins are consumed by many sites; treat every release as public.
 
 - `[always]` Keep a Changelog format, strictly: `## [x.y.z] - YYYY-MM-DD` with `### Added/Changed/Fixed` sections. SemVer: behaviour breaks bump major.
 - `[always]` Versions are git tags; the private Repman registry serves the package.
-- `[always]` End-user documentation lives in the plugin's separate MkDocs docs repo (`cacheable-docs` pattern). The README stays terse: install line, requirements, changelog pointer, docs link.
+- `[always]` End-user documentation lives in the plugin's separate MkDocs docs repo. The README stays terse: install line, requirements, changelog pointer, docs link.
 - `[new]` PHPStan max with no baseline: plugins are small enough to be clean. Unit tests for services from day one.
-- `[existing]` Older plugins (`craft-social-poster`, `craft-seofy`) run PSR-12-only phpcs and Craft 4 era idioms (constants over enums, static `config()` component maps, inline closures). Match the plugin's existing style; upgrades to the current standard are their own task.
+- `[existing]` Older plugins run PSR-12-only phpcs and older idioms (constants over enums, static `config()` component maps, inline closures). Match the plugin's existing style; upgrades to the current standard are their own task.
 
-<!-- oym-card:begin stack=php-craft-plugin -->
+<!-- oym-card:begin stack=framework-craft-plugin -->
 # OYM Craft plugin rules
 
 - Namespace `oym\craft\<handle>\` from `src/`; plugin class with `@property` service map, services in `src/services/`, settings in `src/models/Settings.php` (typed public properties, single source of config).
@@ -48,10 +48,10 @@ Plugins are consumed by many sites; treat every release as public.
 - Keep a Changelog strictly (`## [x.y.z] - YYYY-MM-DD`, Added/Changed/Fixed); SemVer with majors for behaviour breaks; released as git tags via Repman.
 - End-user docs in the separate MkDocs docs repo; README stays terse.
 - New plugins: PHPStan max without baseline, unit tests for services from day one, typed const component maps, boot-time env guards.
-- Existing plugins: match the plugin's era (some are Craft 4, constants instead of enums); modernization is its own task.
-<!-- oym-card:end stack=php-craft-plugin -->
+- Existing plugins: match the plugin's era (some use constants instead of enums); modernization is its own task.
+<!-- oym-card:end stack=framework-craft-plugin -->
 
-## References
+## Examples in the wild
 
 - Newest pattern: `craft-cacheable`
 - Docs repo pattern: `cacheable-docs`, `social-poster-docs`, `seofy-docs` (MkDocs)

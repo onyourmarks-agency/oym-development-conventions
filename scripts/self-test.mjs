@@ -39,11 +39,11 @@ const assert = (condition, message) => {
 try {
     copyFileSync(join(repoRoot, 'templates', 'AGENTS.template.md'), join(scratchDirectory, 'AGENTS.md'));
 
-    runSync(['--stacks', 'php-universal,php-craft']);
+    runSync(['--stacks', 'php,framework-craft']);
     const firstPass = readFileSync(join(scratchDirectory, 'AGENTS.md'), 'utf8');
     assert(firstPass.includes('# OYM shared rules'), 'shared card vendored from template block');
-    assert(firstPass.includes('# OYM PHP rules'), 'php-universal block appended and filled');
-    assert(firstPass.includes('# OYM Craft CMS site rules'), 'php-craft block appended and filled');
+    assert(firstPass.includes('# OYM PHP rules'), 'php block appended and filled');
+    assert(firstPass.includes('# OYM Craft CMS site rules'), 'framework-craft block appended and filled');
     assert(firstPass.includes('mode=existing'), 'mode attribute preserved');
 
     runSync([]);

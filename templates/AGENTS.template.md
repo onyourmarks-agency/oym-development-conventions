@@ -25,6 +25,8 @@ Rules below are vendored from `oym-development-conventions`. Project-specific ru
 <!-- oym-conventions:begin stack=shared mode=existing -->
 <!-- oym-conventions:end stack=shared -->
 
-<!-- Add one empty block pair per applicable stack (same syntax as the shared block
-     above, with stack=php-universal, stack=php-craft, ...), or let the sync script
-     append them via its stacks flag: sync-conventions.mjs with stacks=php-universal,php-craft -->
+<!-- Add one empty block pair per applicable layer (same syntax as the shared block
+     above): language (php or javascript) + framework (framework-craft, framework-craft-plugin,
+     framework-api-simple, framework-symfony, framework-svelte, framework-nestjs) + tool
+     (tool-vite, tool-webpack, tool-sveltekit) where applicable. Or let the sync script
+     append them via its stacks flag: sync-conventions.mjs with stacks=php,framework-craft -->
