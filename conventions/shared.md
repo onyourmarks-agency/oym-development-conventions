@@ -54,6 +54,10 @@ AI agents consistently write too many comments. The OYM standard is the opposite
 - `[always]` `// TODO:` in uppercase, with enough context that someone else can pick it up.
 - `[always]` Do not add or remove comments in code you are not otherwise changing.
 
+## Formatting
+
+- `[always]` Every file ends with a single trailing newline. No file ends without one, none end with more than one.
+
 ## Typing
 
 The codebase is the IDE's autocompletion database. Types are not optional documentation, they are the interface.
@@ -98,6 +102,9 @@ Versions are never hardcoded in rules: the repo's own manifests (composer.json, 
 - No filler docblocks. No `@author`/`@package`/`@version`/`@since`.
 - Docblocks only for what signatures cannot express: generics, array shapes, `@property` maps.
 - Do not touch comments in code you are not otherwise changing.
+
+## Formatting
+- Every file ends with a single trailing newline.
 
 ## Typing
 - Type everything: params, returns, properties, constants.
