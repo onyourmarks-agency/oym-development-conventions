@@ -1,0 +1,23 @@
+# yaml-language-server: $schema=https://devops.onyourmarks.tech/schema/project/v1.json
+version: 1
+client: On Your Marks B.V.
+name: OYM Development Conventions
+type: library
+
+notes: >-
+  Shared coding conventions for humans and AI tools; projects vendor them into AGENTS.md.
+
+stack:
+  - go
+
+contacts:
+  developers:
+    - name: Jordi Kroon
+      email: jkroon@onyourmarks.agency
+      roles: [devops]
+  updates:
+    email: jkroon@onyourmarks.agency
+
+links:
+  - name: Repository
+    url: https://github.com/onyourmarks-agency/oym-development-conventions
