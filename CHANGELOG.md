@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.0] - 2026-11-11
+
+### Added
+
+- Project manifest rules in the shared layer: every repository has a `.project.yml`, it is the source of truth for project metadata, and it is updated in the same change that affects it.
+- `templates/project.template.yml` as the starter manifest for new repositories; the `oym-new-project` skill creates it.
+
 ## [1.1.0] - 2026-09-02
 
 ### Added

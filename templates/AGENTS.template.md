@@ -10,7 +10,8 @@
 
 ## What this project is
 
-<!-- One paragraph: what the repo does, entry points, how to run it (ddev/pnpm commands). -->
+<!-- One paragraph: what the repo does, entry points, how to run it (ddev/pnpm commands).
+     Client, stack, environments, contacts, and links live in .project.yml; do not repeat them here. -->
 
 ## Project-specific rules
 
