@@ -1,0 +1,55 @@
+# yaml-language-server: $schema=https://devops.onyourmarks.tech/schema/project/v1.json
+version: 1
+
+# The client's exact name as known in DevOps.
+client: Client name
+name: Project name
+
+# Omit for a client project; otherwise library, documentation, or infrastructure.
+# type: library
+
+notes: >-
+  Anything the team should know: deploy windows, quirks, agreements.
+
+# Technology slugs from the schema, without versions.
+stack:
+  - php
+
+# Always list the environments once they exist, also for projects on the Kubernetes cluster
+# (the schema lets those omit it, but the manifest should be complete on its own).
+# environments:
+#   staging:
+#     - server: shared4.instance.onyourmarks.tech
+#       hostnames:
+#         - project.staging.example.com
+#   production:
+#     - server: shared3.instance.onyourmarks.tech
+#       hostnames:
+#         - www.example.com
+
+# ai:
+#   models:
+#     - provider: anthropic
+#       model: model-id-as-used-in-api-calls
+#       purpose: What the model is used for
+
+# webfonts:
+#   - vendor: typekit
+#     projectId: kit-id
+#     purpose: What the fonts are used for
+
+# Repository names of related projects.
+# relation:
+#   - other-repository
+
+contacts:
+  developers:
+    - name: Full Name
+      email: developer@onyourmarks.agency
+      roles: [backend]
+  updates:
+    email: developer@onyourmarks.agency
+
+links:
+  - name: Repository
+    url: https://gitlab.com/onyourmarks/projects/repository-name

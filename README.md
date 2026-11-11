@@ -25,7 +25,7 @@ NestJS deliberately shares the `javascript` layer with the front-ends: typing ru
 | `conventions/` | The rules, one file per layer, tool-agnostic. Each file embeds a condensed "card" between `oym-card` markers; the card is what gets vendored into product repos. |
 | `VERSIONS.md` | The only place version numbers live. Rules never hardcode versions; product repos pin their own in their manifests. |
 | `skills/` | Claude Code skills (thin routers into `conventions/`). |
-| `templates/` | Drop-in configs for product repos: PHPStan, PHPUnit, Vitest, NestJS strictness deltas, `AGENTS.md`/`CLAUDE.md` starters. |
+| `templates/` | Drop-in configs for product repos: PHPStan, PHPUnit, Vitest, NestJS strictness deltas, `AGENTS.md`/`CLAUDE.md` starters, and the `.project.yml` manifest starter. |
 | `cmd/`, `internal/`, `main.go` | The `oym-conventions` Go CLI: wires projects and keeps the vendored cards current. Rules and templates are embedded in the binary at release time. |
 | `.claude-plugin/` | Claude Code plugin and marketplace manifests. |
 
@@ -37,6 +37,10 @@ Every rule is tagged `[always]`, `[new]`, or `[existing]`.
 - **Existing projects** bind the AI to local context: the surrounding module outranks this repo, no drive-by retrofits, tooling introduced with baselines and ratchets.
 
 The mode is declared per block in each repo's `AGENTS.md` (`mode=existing|new`); tools fall back to heuristics and default to `existing`.
+
+## The project manifest
+
+Every repository carries a `.project.yml` in its root (schema: `https://devops.onyourmarks.tech/schema/project/v1.json`). It is the source of truth for client, stack, environments, AI models, web fonts, contacts, and links, and the DevOps API imports only repositories that have one. The shared layer requires keeping it current in the same change that affects it; new repositories start from `templates/project.template.yml`.
 
 ## Using it per tool
 

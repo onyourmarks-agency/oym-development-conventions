@@ -34,6 +34,20 @@ How to determine the mode:
 
 Version numbers do not appear in convention rules. Current org-wide targets live in `VERSIONS.md` at the root of the conventions repo; each product repo pins its own versions in `composer.json`, `package.json` (`engines`, `packageManager`), and `.nvmrc`, and those manifests are the runtime truth. When a rule depends on a language feature, it says so ("where the PHP version allows") instead of naming a version.
 
+## Project manifest
+
+Every repository describes itself in a `.project.yml` in its root. The DevOps API imports only repositories that have one.
+
+- `[always]` Every repository has a `.project.yml` in its root, starting with the `# yaml-language-server: $schema=https://devops.onyourmarks.tech/schema/project/v1.json` line and valid against that schema.
+- `[always]` The manifest is the source of truth for project metadata: client, type, stack, environments and hostnames, AI models, web fonts, contacts, links. Read it before asking or guessing; do not duplicate its content in `AGENTS.md` or the README.
+- `[always]` Update the manifest in the same change that makes it untrue: adding or dropping a technology (`stack`), a hostname or environment, an AI model or provider (`ai.models`), a web font (`webfonts`), a related repository (`relation`), or a published docs or schema location.
+- `[always]` Enumerated values (`stack`, `server`, `provider`, `vendor`, `roles`, `type`) come from the schema, which is generated from the DevOps inventory. Never invent a value; a missing one is registered in DevOps first.
+- `[always]` List `environments` for every deployed project, including projects on the Kubernetes cluster. The schema lets cluster projects omit it; list it anyway so the manifest is complete on its own.
+- `[always]` No secrets, tokens, or credentials in the manifest. Link to the secret store instead.
+- `[always]` `stack` lists technologies without versions; versions stay in the package manifests (see Versions).
+- `[new]` A new repository gets its `.project.yml` in the first commit, started from `templates/project.template.yml`, with at least `version`, `client` (the exact name as known in DevOps), `name`, `stack`, `contacts`, and a repository link.
+- `[existing]` Do not restructure or reformat an existing manifest; change only the entries your task affects.
+
 ## Commits
 
 - `[always]` Conventional Commits with optional scope: `feat(optamodule): add live standings consumer`. Types in use: `feat`, `fix`, `chore`, `docs`, `style`, `refactor`, `perf`, `ci`, `build`, `test`.
@@ -92,6 +106,12 @@ Mode: `existing` projects mirror local code exactly; the surrounding module outr
 Layering: back-end = shared + PHP + framework. Front-end = shared + JavaScript + Svelte + tool. NestJS = shared + JavaScript + NestJS. More specific layers win.
 
 Versions are never hardcoded in rules: the repo's own manifests (composer.json, package.json engines, .nvmrc) are the truth; org targets live in the conventions repo's VERSIONS.md.
+
+## Project manifest
+- `.project.yml` in the repo root is the source of truth for client, stack, environments, AI models, web fonts, contacts, links. Read it first; do not duplicate it.
+- Update it in the same change that adds or drops a technology, hostname, AI model, web font, or related repo.
+- Always list `environments`, also for Kubernetes projects.
+- Enum values come from its schema; never invent one. No secrets in it. (new) Create it in the first commit.
 
 ## Commits
 - Conventional Commits, optional scope, lower case imperative subject: `feat(optamodule): add live standings consumer`.

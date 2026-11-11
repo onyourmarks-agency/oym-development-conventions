@@ -26,13 +26,14 @@ Webpack is never chosen for new projects. Conventions live at `${CLAUDE_PLUGIN_R
 1. Scaffold from the boilerplate where one exists; otherwise build the structure described in the framework/tool file. Never hand-roll a different structure.
 2. Wire conventions with the CLI: `oym-conventions init --mode new --stacks <stacks from the table> --yes` (writes AGENTS.md with vendored cards, CLAUDE.md, and offers the quality-gate templates in one go). If the CLI is not installed: `curl -fsSL https://raw.githubusercontent.com/onyourmarks-agency/oym-development-conventions/main/install.sh | bash`.
 3. Fill in the AGENTS.md project sections (what the project is, project-specific rules).
-4. Quality gates before feature work:
+4. Create `.project.yml` in the repo root from `templates/project.template.yml` and fill it in: the client's exact name as known in DevOps, stack, contacts, links, and environments once they exist (always, also for projects on the Kubernetes cluster). Use only values the schema allows; never invent a stack, server, or role slug.
+5. Quality gates before feature work:
    - PHP: `templates/php/phpcs.xml` (adjust scan targets) + `templates/php/phpstan.neon.dist` (level max) + `templates/php/phpunit.xml.dist`; require-dev `squizlabs/php_codesniffer` + `slevomat/coding-standard` + `dealerdirect/phpcodesniffer-composer-installer` + `phpstan/phpstan` (+ `phpstan/phpstan-symfony`/`-doctrine` for Symfony).
    - NestJS: full `strict: true` (`templates/nestjs/tsconfig.strict.delta.jsonc`), `no-explicit-any: error` (`templates/nestjs/eslint.any-rules.snippet.mjs`), Jest wired.
    - Frontend: Vitest config from `templates/svelte/` (pick the tool variant), husky + lint-staged, `frontend-cs` aggregate script.
-5. GitLab CI from the `oym-gitlab-deploy-templates` catalog: the PHP deploy flow components for PHP/Craft, the docker flow components (`stage-build-image`, `stage-tag-environment`) for Node apps. Copy the include block from the nearest comparable repo; component versions in `VERSIONS.md`.
-6. Conventional Commits from the first commit (`git cz`); node projects pin `engines.node` + `packageManager` (pnpm) per `VERSIONS.md`; PHP projects point composer at the Repman registry and include `oym/sentry-logger`.
-7. Keep a Changelog `CHANGELOG.md` for anything published (plugins, packages).
+6. GitLab CI from the `oym-gitlab-deploy-templates` catalog: the PHP deploy flow components for PHP/Craft, the docker flow components (`stage-build-image`, `stage-tag-environment`) for Node apps. Copy the include block from the nearest comparable repo; component versions in `VERSIONS.md`.
+7. Conventional Commits from the first commit (`git cz`); node projects pin `engines.node` + `packageManager` (pnpm) per `VERSIONS.md`; PHP projects point composer at the Repman registry and include `oym/sentry-logger`.
+8. Keep a Changelog `CHANGELOG.md` for anything published (plugins, packages).
 
 ## Step 3: verify
 
