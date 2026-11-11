@@ -15,7 +15,8 @@ notes: >-
 stack:
   - php
 
-# Projects on the Kubernetes cluster may omit this; it is read from the cluster repository.
+# Always list the environments once they exist, also for projects on the Kubernetes cluster
+# (the schema lets those omit it, but the manifest should be complete on its own).
 # environments:
 #   staging:
 #     - server: shared4.instance.onyourmarks.tech

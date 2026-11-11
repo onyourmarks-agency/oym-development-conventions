@@ -42,6 +42,7 @@ Every repository describes itself in a `.project.yml` in its root. The DevOps AP
 - `[always]` The manifest is the source of truth for project metadata: client, type, stack, environments and hostnames, AI models, web fonts, contacts, links. Read it before asking or guessing; do not duplicate its content in `AGENTS.md` or the README.
 - `[always]` Update the manifest in the same change that makes it untrue: adding or dropping a technology (`stack`), a hostname or environment, an AI model or provider (`ai.models`), a web font (`webfonts`), a related repository (`relation`), or a published docs or schema location.
 - `[always]` Enumerated values (`stack`, `server`, `provider`, `vendor`, `roles`, `type`) come from the schema, which is generated from the DevOps inventory. Never invent a value; a missing one is registered in DevOps first.
+- `[always]` List `environments` for every deployed project, including projects on the Kubernetes cluster. The schema lets cluster projects omit it; list it anyway so the manifest is complete on its own.
 - `[always]` No secrets, tokens, or credentials in the manifest. Link to the secret store instead.
 - `[always]` `stack` lists technologies without versions; versions stay in the package manifests (see Versions).
 - `[new]` A new repository gets its `.project.yml` in the first commit, started from `templates/project.template.yml`, with at least `version`, `client` (the exact name as known in DevOps), `name`, `stack`, `contacts`, and a repository link.
@@ -109,6 +110,7 @@ Versions are never hardcoded in rules: the repo's own manifests (composer.json, 
 ## Project manifest
 - `.project.yml` in the repo root is the source of truth for client, stack, environments, AI models, web fonts, contacts, links. Read it first; do not duplicate it.
 - Update it in the same change that adds or drops a technology, hostname, AI model, web font, or related repo.
+- Always list `environments`, also for Kubernetes projects.
 - Enum values come from its schema; never invent one. No secrets in it. (new) Create it in the first commit.
 
 ## Commits
