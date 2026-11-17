@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Changed
+
+- SvelteKit conventions follow SvelteKit 3: configuration through the Vite plugin in `sveltekit.config.js` (no `svelte.config.js`), `tsconfig.json` extending `$app/tsconfig`, own modules as `#lib/...` with file extensions, environment variables declared in `src/env.ts` and read from `$app/env/private`, and hook types from `@sveltejs/kit/hooks`. SvelteKit 2 is no longer supported.
+- `VERSIONS.md`: SvelteKit 3, which needs Vite 8 and TypeScript 6.
+- `templates/svelte/vitest.config.sveltekit.ts` passes the shared options to the SvelteKit plugin.
+
+### Added
+
+- `templates/svelte/sveltekit.config.js`: the SvelteKit options, with runes forced and a CSP to start from.
+
 ## [1.2.0] - 2026-11-11
 
 ### Added

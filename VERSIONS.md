@@ -13,10 +13,10 @@ Update this table when the org moves; nothing else in this repo needs touching.
 | PHPStan | latest, level max | See `conventions/php.md` for the baseline policy |
 | Node | 24 | `engines.node` + `.nvmrc` in every JS repo |
 | pnpm | 10/11 | Pinned per repo via `packageManager` |
-| TypeScript | 5/6 | Newest projects on 6 |
+| TypeScript | 5/6 | Newest projects on 6. SvelteKit apps need 6 |
 | Svelte | 5 (runes) | |
-| SvelteKit | 2 | `adapter-node` |
-| Vite | 7/8 | |
+| SvelteKit | 3 | `adapter-node` 6. SvelteKit 2 is not supported |
+| Vite | 7/8 | SvelteKit apps need 8 |
 | Tailwind | 4 (CSS-first) | `@theme` in CSS, no tailwind.config.js |
 | NestJS | 11 | |
 | Prisma | 7 | With the MariaDB adapter |

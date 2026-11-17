@@ -4,7 +4,12 @@ Applies to standalone SvelteKit applications. Builds on `javascript.md` + `frame
 
 ## Stack
 
-- `[always]` SvelteKit with `adapter-node`, runes forced via `dynamicCompileOptions` in `svelte.config.js`, CSS-first Tailwind.
+- `[always]` SvelteKit with `adapter-node`, CSS-first Tailwind.
+- `[always]` SvelteKit is configured through its Vite plugin. The options live in `sveltekit.config.js`, which exports them once for `vite.config.ts`, `vitest.config.ts` and ESLint (`sveltekit(sveltekitConfig)`). There is no `svelte.config.js`. Runes are forced there via `dynamicCompileOptions`.
+- `[always]` `tsconfig.json` extends `$app/tsconfig`.
+- `[always]` The app's own modules are imported as `#lib/...` with their file extension (`"imports": { "#lib/*": "./src/lib/*" }` in `package.json`). Not `$lib`, and no `alias` in the config.
+- `[always]` Every environment variable is declared in `src/env.ts` with `defineEnvVars` and read from `$app/env/private` (or `$app/env/public`). Not `$env/...` and not `process.env`.
+- `[always]` Hook types come from `@sveltejs/kit/hooks` (`Handle`), the config type from `@sveltejs/kit/vite` (`Config`).
 - `[always]` UI primitives via shadcn-svelte / bits-ui where the project uses them (`components.json` present): check `lib/components/ui` for an existing primitive before writing one.
 - `[always]` i18n via Paraglide/inlang (`project.inlang/`, `messages/`), locale routing with a `[lang=lang]` matcher where the app is multilingual.
 - `[always]` Sentry via the SvelteKit SDK, wired in `hooks.server.ts`/`hooks.client.ts`.
@@ -24,7 +29,7 @@ lib/
   modules/              client service classes, BaseModule
   config/  hooks/  actions/  utils/  assets/
 routes/                 (groups), [lang=lang], api/ endpoints
-hooks.server.ts  hooks.client.ts  app.css (or style/main.css)
+hooks.server.ts  hooks.client.ts  env.ts  app.css (or style/main.css)
 ```
 
 - `[always]` Types and interfaces are defined in `entities/` (or the repo's established types location), imported where needed. The one exception: component prop types are inline in the `$props()` destructuring.
@@ -32,7 +37,7 @@ hooks.server.ts  hooks.client.ts  app.css (or style/main.css)
 
 ## Client/server boundary
 
-- `[always]` Server secrets and `$env/dynamic/private` only under `lib/server/` or `*.server.ts` files. Keep the boundary strict.
+- `[always]` Server secrets and `$app/env/private` only under `lib/server/` or `*.server.ts` files. Keep the boundary strict.
 - `[always]` Server-side singletons follow the `getInstance()` + lazy `??=` getter pattern (`*.server.ts` modules); client side uses `BaseModule` the same way.
 - `[always]` `load` functions in `+page(.server).ts`/`+layout.server.ts` wrap API access via the module layer with try/catch fallbacks returning explicit null data; typed as `PageLoad`/`PageServerLoad`.
 
@@ -65,25 +70,30 @@ hooks.server.ts  hooks.client.ts  app.css (or style/main.css)
 - `[always]` This family's Prettier config: tabs, single quotes, `trailingComma: 'none'`, printWidth 100, Tailwind plugin with `tailwindStylesheet` pointing at the main CSS file. Semicolons stay on (Prettier default; the config does not disable them). The repo config is authoritative (see `javascript.md`).
 - `[always]` Import order via `simple-import-sort` where configured.
 - `[always]` The gate is the project's scripts: `pnpm frontend-cs` where defined, otherwise `lint` + `check`; `ddev pnpm ...` in DDEV projects.
-- `[new]` New apps use the structure above, Vitest from day one for entities and states (`templates/svelte/vitest.config.sveltekit.ts`), and CSP directives configured in `svelte.config.js`.
+- `[new]` New apps use the structure above, Vitest from day one for entities and states (`templates/svelte/vitest.config.sveltekit.ts`), and CSP directives configured in `sveltekit.config.js` (`templates/svelte/sveltekit.config.js`).
+- `[existing]` The previous major of SvelteKit (`svelte.config.js`, `$lib`, `$env`) is not supported. An app still on it is migrated before anything is added to it.
 - `[existing]` One older SvelteKit app predates this standard (adapter-static, no Tailwind, BEM CSS, class-transformer models, Storybook). Inside it, its local style wins.
 
 <!-- oym-card:begin stack=tool-sveltekit -->
 # OYM SvelteKit rules
 
 - `adapter-node`, runes forced, CSS-first Tailwind. Deployed as a Docker image; keep `/health` and `/ready`.
+- Configured through the Vite plugin: options in `sveltekit.config.js`, passed to `sveltekit(...)`. No `svelte.config.js`. `tsconfig.json` extends `$app/tsconfig`.
+- Own modules as `#lib/...` with the file extension (`imports` in `package.json`), not `$lib`. Env variables declared in `src/env.ts`, read from `$app/env/private`, not `$env`. `Handle` from `@sveltejs/kit/hooks`.
 - Layout: `src/lib/{components,server,entities,states,modules}` + `routes/` with groups and `[lang=lang]`.
 - Types/interfaces in `entities/` (domain entities as classes with `static fromObject` when they carry behaviour); only component prop types are inline in `$props()`.
-- Strict client/server boundary: secrets and `$env/dynamic/private` only in `lib/server` / `*.server.ts`. Server singletons via `getInstance()` + lazy `??=` getters.
+- Strict client/server boundary: secrets and `$app/env/private` only in `lib/server` / `*.server.ts`. Server singletons via `getInstance()` + lazy `??=` getters.
 - `load` functions typed (`PageLoad`/`PageServerLoad`), API access through the module layer, try/catch with explicit null fallbacks.
 - Endpoints as `+server.ts` with `RequestHandler` + `json()` and stable coded error strings; preserve existing response contracts; never weaken auth checks on API routes.
 - Fetch via the project's service classes (`credentials: 'include'`, throw coded errors on `!response.ok`).
 - shadcn-svelte/bits-ui first where present: check `lib/components/ui` before writing a primitive. Paraglide for all UI strings.
 - Family formatting (repo config is authoritative): tabs, single quotes, trailingComma none, width 100, Tailwind plugin; semicolons stay on.
 - Run the project's gate before finishing (`frontend-cs` or lint + check; `ddev pnpm` where DDEV).
-- New apps: this structure, Vitest for entities/states day one, CSP in `svelte.config.js`.
+- New apps: this structure, Vitest for entities/states day one, CSP in `sveltekit.config.js`.
+- The previous SvelteKit major is not supported: migrate an app that still has a `svelte.config.js`.
 <!-- oym-card:end stack=tool-sveltekit -->
 
 ## Templates
 
+- `templates/svelte/sveltekit.config.js`
 - `templates/svelte/vitest.config.sveltekit.ts`

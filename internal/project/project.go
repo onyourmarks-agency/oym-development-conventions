@@ -155,7 +155,10 @@ func TemplateItems(stacks []string, mode string) []TemplateItem {
 		items = append(items, TemplateItem{Label: "vitest.config.ts (Vite islands)", Source: "templates/svelte/vitest.config.vite-craft.ts", Dest: "vitest.config.ts"})
 	}
 	if slices.Contains(stacks, "tool-sveltekit") {
-		items = append(items, TemplateItem{Label: "vitest.config.ts (SvelteKit)", Source: "templates/svelte/vitest.config.sveltekit.ts", Dest: "vitest.config.ts"})
+		items = append(items,
+			TemplateItem{Label: "sveltekit.config.js (SvelteKit options)", Source: "templates/svelte/sveltekit.config.js", Dest: "sveltekit.config.js"},
+			TemplateItem{Label: "vitest.config.ts (SvelteKit)", Source: "templates/svelte/vitest.config.sveltekit.ts", Dest: "vitest.config.ts"},
+		)
 	}
 	if slices.Contains(stacks, "framework-nestjs") {
 		items = append(items,
