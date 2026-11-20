@@ -19,6 +19,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `oym-seed` skill: gives a Craft site seed data with `oym/craft-seed` (generated content, no copy of staging or production), or repairs the seed when the drift check reports that the content model changed.
 - `templates/ddev/seed`: the `ddev seed` command the skill adds to a project.
 
+### Fixed
+
+- `oym-seed` skill, after its first unattended run: checks before starting (`.env`, Composer, clean project config), everything runs inside ddev, split project config, restoring the project config after the Craft installer, what to do when a project bug is in the way, how to build the URLs to check, the Craft 5 log format, and capturing fields of plugins through `fieldCaptures`.
+
 ## [1.2.0] - 2026-11-11
 
 ### Added
