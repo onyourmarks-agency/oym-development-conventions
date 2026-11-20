@@ -25,7 +25,7 @@ NestJS deliberately shares the `javascript` layer with the front-ends: typing ru
 | `conventions/` | The rules, one file per layer, tool-agnostic. Each file embeds a condensed "card" between `oym-card` markers; the card is what gets vendored into product repos. |
 | `VERSIONS.md` | The only place version numbers live. Rules never hardcode versions; product repos pin their own in their manifests. |
 | `skills/` | Claude Code skills (thin routers into `conventions/`). |
-| `templates/` | Drop-in configs for product repos: PHPStan, PHPUnit, Vitest, NestJS strictness deltas, `AGENTS.md`/`CLAUDE.md` starters, and the `.project.yml` manifest starter. |
+| `templates/` | Drop-in configs for product repos: PHPStan, PHPUnit, Vitest, NestJS strictness deltas, `AGENTS.md`/`CLAUDE.md` starters, the `.project.yml` manifest starter, and the `ddev seed` command. |
 | `cmd/`, `internal/`, `main.go` | The `oym-conventions` Go CLI: wires projects and keeps the vendored cards current. Rules and templates are embedded in the binary at release time. |
 | `.claude-plugin/` | Claude Code plugin and marketplace manifests. |
 
@@ -53,7 +53,7 @@ Install once, works in every repo:
 /plugin install oym-conventions@oym
 ```
 
-The skills (`oym-php`, `oym-nestjs`, `oym-frontend`, `oym-new-project`) trigger automatically on matching work, detect the framework/tool from the repo, and read the right layer files. Product repos keep a one-line `CLAUDE.md` (`@AGENTS.md`) so Claude also sees the vendored cards and project-specific rules.
+The skills (`oym-php`, `oym-nestjs`, `oym-frontend`, `oym-new-project`) trigger automatically on matching work, detect the framework/tool from the repo, and read the right layer files. `oym-seed` gives a Craft site seed data with the `oym/craft-seed` package, or repairs the seed after the content model changed. Product repos keep a one-line `CLAUDE.md` (`@AGENTS.md`) so Claude also sees the vendored cards and project-specific rules.
 
 ### Devin
 
