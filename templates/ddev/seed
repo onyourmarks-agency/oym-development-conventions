@@ -1,0 +1,10 @@
+#!/bin/bash
+
+## Description: Fill the site with generated seed data (oym/craft-seed). Pass --fresh to replace earlier seed data.
+## Usage: seed [flags]
+## Example: "ddev seed --fresh"
+
+set -euo pipefail
+
+php craft oym-seed/run "$@"
+php craft oym-seed/check
